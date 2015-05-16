@@ -1,0 +1,13 @@
+*.swp
+*.swo
+*.swn
+*~
+backend/Gemfile.lock
+backend/coverage
+frontend/.tmp
+frontend/dist
+frontend/node_modules
+frontend/bower_components/
+frontend/typings/
+frontend/dest/
+frontend/config.json
