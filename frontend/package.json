@@ -5,10 +5,22 @@
     "typescript": "^1.5.0-beta"
   },
   "devDependencies": {
+    "browser-sync": "^2.7.1",
     "gulp": "^3.8.11",
+    "gulp-angular-filesort": "^1.1.1",
+    "gulp-autoprefixer": "^2.3.0",
+    "gulp-filter": "^2.0.2",
+    "gulp-inject": "^1.2.0",
+    "gulp-load-plugins": "^0.10.0",
+    "gulp-sass": "^2.0.1",
+    "gulp-size": "^1.2.1",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-traceur": "^0.17.1",
     "gulp-tsc": "^0.9.5",
+    "gulp-util": "^3.0.4",
     "require-dir": "^0.3.0",
-    "wiredep": "^2.2.2"
+    "wiredep": "^2.2.2",
+    "wrench": "^1.5.8"
   },
   "engines": {
     "node": ">=0.10.0"

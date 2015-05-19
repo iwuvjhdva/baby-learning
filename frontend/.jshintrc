@@ -21,6 +21,6 @@
   "globals": {
     "window": false,
     "prompt": false,
-    "alert": false,
+    "alert": false
   }
 }

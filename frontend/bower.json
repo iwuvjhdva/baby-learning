@@ -1,0 +1,22 @@
+{
+  "name": "baby-learning",
+  "version": "1.0.0",
+  "homepage": "https://github.com/iwuvjhdva/baby-learning",
+  "description": "Baby learning platform operating Glenn Doman's bit of intelligence cards",
+  "main": "index.html",
+  "moduleType": [
+    "globals"
+  ],
+  "authors": [
+    "Konstantin Alexandrov <iwuvjhdva@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {}
+}
