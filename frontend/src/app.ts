@@ -11,8 +11,11 @@ import {Component, View, bootstrap} from 'angular2/angular2';
 })
 
 class BabyLearningComponent {
-    constructor() {
-    }
+  name: string;
+
+  constructor() {
+    this.name = 'Alice';
+  }
 }
 
 bootstrap(BabyLearningComponent);
