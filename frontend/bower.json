@@ -19,6 +19,7 @@
     "tests"
   ],
   "dependencies": {
-    "angular2": "https://github.com/angular/angular.git#~2.0.0-alpha.25"
+    "angular2": "https://github.com/angular/angular.git#~2.0.0-alpha.25",
+    "bootstrap": "~3.3.4"
   }
 }

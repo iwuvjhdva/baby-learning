@@ -1,21 +1,18 @@
 /// <reference path="../typings/angular2/angular2.d.ts" />
 
 import {Component, View, bootstrap} from 'angular2/angular2';
+import {BitOfIntelligence} from 'bit-of-intelligence/bit-of-intelligence'
 
 // Annotation section
 @Component({
-    selector: 'baby-learning'
+  selector: 'baby-learning'
 })
 @View({
-    template: '<h1>Hello {{ name }}</h1>'
+  template: '<bit-of-intelligence></bit-of-intelligence>',
+  directives: [BitOfIntelligence]
 })
 
 class BabyLearningComponent {
-  name: string;
-
-  constructor() {
-    this.name = 'Alice';
-  }
 }
 
 bootstrap(BabyLearningComponent);
