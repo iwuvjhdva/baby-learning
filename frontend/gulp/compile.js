@@ -1,22 +1,29 @@
 'use strict';
 
 var gulp = require('gulp');
+var typescript = require('gulp-typescript');
+var sourcemaps = require('gulp-sourcemaps');
 var browserSync = require('browser-sync');
-var typescript = require('gulp-tsc');
+// var merge = require('merge2');
+
+var tsProject = typescript.createProject({
+  typescript: require('typescript'),
+  target: 'ES5',
+  module: 'commonjs',
+  sortOutput: true,
+  declarationFiles: true
+});
 
 module.exports = function(options) {
   gulp.task('compile', function () {
-    var pipe = gulp.src(options.src + '/**/*.ts')
-      .pipe(typescript({
-        target: 'ES5',
-        sourceMap: true,
-        declaration: true,
-        keepTree: false,
-        sourceRoot: '/',
-        outDir: options.tmp + '/serve'
-      }))
+    var tsResult = gulp.src(options.src + '/**/*.ts')
+      .pipe(sourcemaps.init())
+      .pipe(typescript(tsProject));
+
+    var pipe = tsResult.js
+      .pipe(sourcemaps.write({ sourceRoot: '/'}))
       .pipe(gulp.dest(options.tmp + '/serve'))
-      .pipe(browserSync.reload({ stream: true }));
+      .pipe(browserSync.reload({ stream: true }));
 
     return pipe;
   });
