@@ -1,25 +1,23 @@
 {
-  "name": "baby-learning",
-  "version": "1.0.0",
-  "homepage": "https://github.com/iwuvjhdva/baby-learning",
-  "description": "Baby learning platform operating Glenn Doman's bit of intelligence cards",
-  "main": "index.html",
-  "moduleType": [
-    "globals"
-  ],
-  "authors": [
-    "Konstantin Alexandrov <iwuvjhdva@gmail.com>"
-  ],
-  "license": "MIT",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "babyLearning",
+  "version": "0.0.0",
   "dependencies": {
-    "angular2": "https://github.com/angular/angular.git#~2.0.0-alpha.25",
-    "bootstrap": "~3.3.4"
+    "angular-animate": "~1.4.0",
+    "angular-cookies": "~1.4.0",
+    "angular-touch": "~1.4.0",
+    "angular-sanitize": "~1.4.0",
+    "angular-ui-router": "~0.2.15",
+    "angular-material": "~0.9.7",
+    "malarkey": "yuanqing/malarkey#~1.3.0",
+    "toastr": "~2.1.1",
+    "moment": "~2.10.3",
+    "animate.css": "~3.3.0",
+    "angular": "~1.4.0"
+  },
+  "devDependencies": {
+    "angular-mocks": "~1.4.0"
+  },
+  "resolutions": {
+    "angular": "~1.4.0"
   }
 }

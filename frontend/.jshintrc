@@ -1,26 +1,17 @@
 {
-  "node": true,
-  "esnext": true,
+  "strict": true,
   "bitwise": true,
   "curly": true,
   "eqeqeq": true,
-  "immed": true,
-  "indent": 2,
-  "latedef": true,
-  "newcap": false,
+  "latedef": false,
   "noarg": true,
-  "regexp": true,
   "undef": true,
   "unused": true,
-  "strict": true,
-  "trailing": true,
-  "smarttabs": true,
-  "white": true,
   "validthis": true,
-  "curly": true,
+  "jasmine": true,
   "globals": {
-    "window": false,
-    "prompt": false,
-    "alert": false
+    "angular": false,
+    "inject": false,
+    "module": false
   }
 }
