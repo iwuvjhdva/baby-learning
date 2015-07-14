@@ -1,7 +1,7 @@
-<svg>
-  <circle ng-repeat="circle in vm.circles"
-    ng-attr-cx="{{ circle.x }}%"
-    ng-attr-cy="{{ circle.y }}%"
-    r="40"
+<svg ng-swipe-left="vm.next()">
+  <circle ng-repeat="dot in vm.dots"
+    ng-attr-cx="{{ dot.x }}%"
+    ng-attr-cy="{{ dot.y }}%"
+    r="2.75%"
     fill="red" />
 </svg>

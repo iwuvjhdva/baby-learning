@@ -19,19 +19,32 @@ module babyLearning {
 
   /** @ngInject */
   class MathBitController {
-    public circles: Object[];
+    public config: any[];
+    public currentBitIndex: number;
+    public dots: Object[];
 
     constructor() {
-      this.circles = [];
-      for (var index = 0; index < this.config.quantity; index++) {
-        var circle = {
-          x: Math.random() * 100,
-          y: Math.random() * 100,
-        };
-        console.log(circle);
+      this.currentBitIndex = 0;
+      this.drawDots();
+    }
 
-        this.circles.push(circle);
+    drawDots() {
+      this.dots = [];
+      var currentBit = this.config[this.currentBitIndex];
+
+      for (var index = 0; index < currentBit.quantity; index++) {
+        var dot = {
+          x: Math.random() * 100,
+          y: Math.random() * 100
+        };
+
+        this.dots.push(dot);
       }
+    }
+
+    next() {
+      this.currentBitIndex += 1;
+      this.drawDots();
     }
   }
 }

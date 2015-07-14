@@ -2,15 +2,22 @@ module babyLearning {
   'use strict';
 
   export class MainController {
-    public bit: Object;
+    public excercise: Object[];
 
     /* @ngInject */
     constructor () {
-      this.bit = {
-        course: 'math',
-        kind: 'quantity',
-        quantity: 10
-      };
+      this.excercise = [
+        {
+          course: 'math',
+          kind: 'quantity',
+          quantity: 2
+        },
+        {
+          course: 'math',
+          kind: 'quantity',
+          quantity: 10
+        }
+      ];
 
       this.activate();
     }
