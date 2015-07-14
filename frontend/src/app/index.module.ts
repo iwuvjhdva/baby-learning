@@ -10,7 +10,7 @@
 /// <reference path="../app/components/malarkey/malarkey.directive.ts" />
 /// <reference path="../app/components/webDevTec/webDevTec.service.ts" />
 /// <reference path="../app/components/githubContributor/githubContributor.service.ts" />
-/// <reference path="../app/bits/math/math.directive.ts" />
+/// <reference path="../app/excercises/math/math.directive.ts" />
 
 declare var malarkey: any;
 declare var toastr: Toastr;
@@ -33,5 +33,5 @@ module babyLearning {
     .controller('MainController', MainController)
     .directive('acmeNavbar', acmeNavbar)
     .directive('acmeMalarkey', acmeMalarkey)
-    .directive('mathBit', mathBit);
+    .directive('mathExcercise', mathExcercise);
 }

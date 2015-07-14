@@ -2,11 +2,15 @@ module babyLearning {
   'use strict';
 
   export class MainController {
-    public excercise: Object[];
+    public bits: Object[];
+
+    private $http: ng.IHttpService;
 
     /* @ngInject */
-    constructor () {
-      this.excercise = [
+    constructor ($http: ng.IHttpService) {
+      this.$http = $http;
+
+      this.bits = [
         {
           course: 'math',
           kind: 'quantity',
@@ -24,6 +28,14 @@ module babyLearning {
 
     activate() {
       var self = this;
+    }
+
+    loadNext() {
+      console.debug('loadNext() called');
+      return;
+      this.$http.get('http://localhost:5000/excercises/next')
+        .success(function () {
+        });
     }
   }
 }

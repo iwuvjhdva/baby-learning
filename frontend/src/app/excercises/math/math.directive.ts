@@ -2,15 +2,16 @@ module babyLearning {
   'use strict';
 
   /** @ngInject */
-  export function mathBit(): ng.IDirective {
+  export function mathExcercise(): ng.IDirective {
 
     return {
       restrict: 'E',
       scope: {
-        config: '='
+        bits: '=',
+        onOver: '&'
       },
-      templateUrl: 'app/bits/math/math.html',
-      controller: MathBitController,
+      templateUrl: 'app/excercises/math/math.html',
+      controller: MathExcerciseController,
       controllerAs: 'vm',
       bindToController: true
     };
@@ -18,8 +19,9 @@ module babyLearning {
   }
 
   /** @ngInject */
-  class MathBitController {
-    public config: any[];
+  class MathExcerciseController {
+    public bits: any[];
+    public onOver: {(): void;};
     public currentBitIndex: number;
     public dots: Object[];
 
@@ -30,7 +32,7 @@ module babyLearning {
 
     drawDots() {
       this.dots = [];
-      var currentBit = this.config[this.currentBitIndex];
+      var currentBit = this.bits[this.currentBitIndex];
 
       for (var index = 0; index < currentBit.quantity; index++) {
         var dot = {
@@ -42,9 +44,15 @@ module babyLearning {
       }
     }
 
-    next() {
+    nextBit() {
       this.currentBitIndex += 1;
-      this.drawDots();
+
+      if (this.currentBitIndex >= this.bits.length) {
+        this.currentBitIndex = 0;
+        this.onOver();
+      } else {
+        this.drawDots();
+      }
     }
   }
 }
