@@ -14,28 +14,22 @@ module babyLearning {
         {
           course: 'math',
           kind: 'quantity',
-          quantity: 2
+          quantity: 100
         },
         {
           course: 'math',
           kind: 'quantity',
-          quantity: 10
+          quantity: 200
         }
       ];
 
-      this.activate();
-    }
-
-    activate() {
-      var self = this;
     }
 
     loadNext() {
-      console.debug('loadNext() called');
       return;
-      this.$http.get('http://localhost:5000/excercises/next')
-        .success(function () {
-        });
+      // this.$http.get('http://localhost:5000/excercises/next')
+      //   .success(function () {
+      //   });
     }
   }
 }
