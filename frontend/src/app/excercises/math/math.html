@@ -2,6 +2,6 @@
   <circle ng-repeat="dot in vm.dots"
     ng-attr-cx="{{ dot.x }}%"
     ng-attr-cy="{{ dot.y }}%"
-    r="2.75%"
+    ng-attr-r="{{vm.radius}}%"
     fill="red" />
 </svg>
