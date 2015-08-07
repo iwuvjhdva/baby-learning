@@ -9,29 +9,14 @@ module babyLearning {
     /* @ngInject */
     constructor ($http: ng.IHttpService) {
       this.$http = $http;
-
-      this.bits = [
-        {
-          course: 'math',
-          kind: 'quantity',
-          label: '100',
-          quantity: 100
-        },
-        {
-          course: 'math',
-          kind: 'quantity',
-          label: '200',
-          quantity: 200
-        }
-      ];
-
+      this.loadNext();
     }
 
     loadNext() {
-      return;
-      // this.$http.get('http://localhost:5000/excercises/next')
-      //   .success(function () {
-      //   });
+      this.$http.get('http://localhost:8080/exercises/next')
+        .success(function () {
+          debugger;
+        });
     }
   }
 }

@@ -16,14 +16,16 @@ class Exercises:
         })
 
         bits = None
+        time_passed = None
 
-        time_passed = datetime.now() - profile['last_exercised']
+        if profile['last_exercised'] is not None:
+            time_passed = datetime.now() - profile['last_exercised']
 
-        if time_passed < timedelta(minutes=20):
+        if time_passed is not None and time_passed < timedelta(minutes=20):
             bits = TakeABreak(minutes=time_passed.minutes).get_bits()
         else:
             exercise = Math(profile['courses']['math'])
-            bits = exercise.get_bits()
+            bits = exercise.perform()
 
         return {
             'bits': bits

@@ -10,6 +10,6 @@ db = DB(client=None)
 
 
 def init_database():
-    db_config = cherrypy.request.app.config['database']
+    db_config = cherrypy.config['database']
     db.client = pymongo.MongoClient(
         db_config['mongodb_uri'])[db_config['mongodb_name']]

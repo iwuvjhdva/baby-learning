@@ -42,7 +42,6 @@ module babyLearning {
       this.dots = [];
       var currentBit = this.bits[this.currentBitIndex];
 
-
       for (var index = 0; index < currentBit.quantity; index++) {
         do {
           var dot: IDot = {

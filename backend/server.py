@@ -3,13 +3,13 @@
 import cherrypy
 
 from backend.db import init_database
-from backend.exercises import Exercises
+from backend.application import Exercises
 
 if __name__ == '__main__':
     cherrypy.config.update("server.conf")
 
     init_database()
-    cherrypy.tree.mount(Exercises(), '/exercises')
+    cherrypy.tree.mount(Exercises(), '/exercises', {'/': {'tools.CORS.on': True}})
 
     cherrypy.engine.start()
     cherrypy.engine.block()
