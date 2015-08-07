@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import cherrypy
 
 from backend.db import db
+from backend.exercises.take_a_break import TakeABreak
 from backend.exercises.math import Math
 
 
@@ -14,17 +15,15 @@ class Exercises:
             'user': 'linoy'
         })
 
-        time_passed = datetime.now() - profile['last_exercised']
-
         bits = None
 
+        time_passed = datetime.now() - profile['last_exercised']
+
         if time_passed < timedelta(minutes=20):
-            bits = [{
-                'type': 'take_a_rest',
-                'minutes_left': time_passed.minutes
-            }]
-        elif profile['state'] is None:
-            bits = Math('quantity', range(1, 6), shuffle=False)
+            bits = TakeABreak(minutes=time_passed.minutes).get_bits()
+        else:
+            exercise = Math(profile['courses']['math'])
+            bits = exercise.get_bits()
 
         return {
             'bits': bits
