@@ -14,11 +14,13 @@ module babyLearning {
         {
           course: 'math',
           kind: 'quantity',
+          label: '100',
           quantity: 100
         },
         {
           course: 'math',
           kind: 'quantity',
+          label: '200',
           quantity: 200
         }
       ];

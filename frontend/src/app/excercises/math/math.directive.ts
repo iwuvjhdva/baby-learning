@@ -30,6 +30,7 @@ module babyLearning {
     public onOver: { (): void; };
     public currentBitIndex: number;
     public dots: IDot[];
+    public label: string;
 
     constructor() {
       this.radius = 2.75;
@@ -52,6 +53,8 @@ module babyLearning {
 
         this.dots.push(dot);
       }
+
+      this.label = currentBit.label;
     }
 
     getRandomCoord() {
