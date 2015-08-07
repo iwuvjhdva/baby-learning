@@ -18,13 +18,18 @@ module babyLearning {
 
   }
 
+  interface IDot {
+    x: number;
+    y: number;
+  }
+
   /** @ngInject */
   class MathExcerciseController {
     public radius: number;
     public bits: any[];
-    public onOver: {(): void;};
+    public onOver: { (): void; };
     public currentBitIndex: number;
-    public dots: {x: number; y: number}[];
+    public dots: IDot[];
 
     constructor() {
       this.radius = 2.75;
@@ -36,21 +41,15 @@ module babyLearning {
       this.dots = [];
       var currentBit = this.bits[this.currentBitIndex];
 
-      // var w = 0;
+
       for (var index = 0; index < currentBit.quantity; index++) {
         do {
-          var dot = {
+          var dot: IDot = {
             x: this.getRandomCoord(),
             y: this.getRandomCoord()
           };
         } while (this.overlapsOthers(dot));
 
-        // var dot = {
-        //   x: w,
-        //   y: this.radius
-        // };
-        //
-        // w+=this.radius;
         this.dots.push(dot);
       }
     }
@@ -59,26 +58,21 @@ module babyLearning {
       return this.radius + Math.random() * (100 - this.radius * 2);
     }
 
-    overlapsOthers(dot) {
+    overlapsOthers(dot: IDot): boolean {
       var self = this;
 
-      this.dots.forEach(function (otherDot) {
+      return this.dots.some(overlapsOther);
+
+      ////
+
+      function overlapsOther(otherDot: IDot) {
         var distance = Math.sqrt(
             Math.pow(otherDot.x - dot.x, 2) +
             Math.pow(otherDot.y - dot.y, 2)
           );
 
-        if (distance <= self.radius * 140) {
-          console.log('overlaps!');
-          return true;
-        } else {
-          console.log(distance, self.radius * 140);
-        }
-      });
-
-      console.log("doesn't overlap!", dot);
-
-      return false;
+        return (distance <= self.radius * 2);
+      }
     }
 
     nextBit() {
