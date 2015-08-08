@@ -42,6 +42,9 @@ module babyLearning {
       this.dots = [];
       var currentBit = this.bits[this.currentBitIndex];
 
+      this.label = currentBit.label;
+      console.log(currentBit.label);
+
       for (var index = 0; index < currentBit.quantity; index++) {
         do {
           var dot: IDot = {
@@ -52,8 +55,6 @@ module babyLearning {
 
         this.dots.push(dot);
       }
-
-      this.label = currentBit.label;
     }
 
     getRandomCoord() {

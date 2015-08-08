@@ -5,7 +5,7 @@ class TakeABreak(BaseExercise):
     def __init__(self, minutes):
         self._minutes = minutes
 
-    def get_bits(self):
+    def perform(self):
         bits = [{
             'type': 'take_a_break',
             'minutes_left': self._minutes

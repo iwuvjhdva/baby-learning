@@ -13,9 +13,11 @@ module babyLearning {
     }
 
     loadNext() {
+      var self = this;
+
       this.$http.get('http://localhost:8080/exercises/next')
-        .success(function () {
-          debugger;
+        .success(function (response: any) {
+          self.bits = response.bits;
         });
     }
   }

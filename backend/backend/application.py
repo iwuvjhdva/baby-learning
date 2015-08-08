@@ -11,7 +11,7 @@ class Exercises:
     @cherrypy.expose
     @cherrypy.tools.json_out()
     def next(self):
-        profile = db.profiles.find_one({
+        profile = db.client.profiles.find_one({
             'user': 'linoy'
         })
 
@@ -21,11 +21,12 @@ class Exercises:
         if profile['last_exercised'] is not None:
             time_passed = datetime.now() - profile['last_exercised']
 
-        if time_passed is not None and time_passed < timedelta(minutes=20):
-            bits = TakeABreak(minutes=time_passed.minutes).get_bits()
-        else:
-            exercise = Math(profile['courses']['math'])
-            bits = exercise.perform()
+        # if time_passed is not None and time_passed < timedelta(minutes=30):
+        #     minutes_left = 30 - time_passed.seconds / 60.
+        #     bits = TakeABreak(minutes=minutes_left).perform()
+        # else:
+        exercise = Math(profile['courses']['math'])
+        bits = exercise.perform()
 
         return {
             'bits': bits

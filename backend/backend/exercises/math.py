@@ -1,5 +1,4 @@
 import random
-from enum import Enum
 
 from backend.db import db
 from backend.exercises.base import BaseExercise
@@ -9,7 +8,7 @@ from backend.exercises.base import BaseExercise
 # TODO: quanitities 200, 300, 400, 500, 600, 700, 800, 900, 1000, 10000
 
 
-class MathStates(Enum):
+class MathStates:
     none = None
     quantity_1_5 = '1-5'
     quantity_1_10 = '1-10'
@@ -39,10 +38,10 @@ class Math(BaseExercise):
         state = self.profile['state'].copy()
         state_name = self.profile['state']['name']
 
-        if state_name is MathStates.none:
+        if state_name == MathStates.none:
             bits = self._create_quantity_bits(range(1, 6), shuffle=False)
             state = dict(name=MathStates.quantity_1_5, counter=0)
-        elif state_name is MathStates.quantity_1_5:
+        elif state_name == MathStates.quantity_1_5:
             bits = self._create_quantity_bits(range(1, 6))
             state['counter'] += 1
 
@@ -50,8 +49,8 @@ class Math(BaseExercise):
                 state = dict(name=MathStates.quantity_1_10, counter=0)
             else:
                 state['name'] = MathStates.quantity_1_5
-        elif state_name is MathStates.quantity_1_10:
-            pass
+        elif state_name == MathStates.quantity_1_10:
+            state = dict(name=MathStates.quantity_1_5, counter=0)
         else:
             bits = None
 
