@@ -51,6 +51,7 @@ class Math(BaseExercise):
                 state['name'] = MathStates.quantity_1_5
         elif state_name == MathStates.quantity_1_10:
             state = dict(name=MathStates.quantity_1_5, counter=0)
+            bits = self._create_quantity_bits(range(1, 6))
         else:
             bits = None
 

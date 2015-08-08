@@ -2,20 +2,32 @@
 
 import cherrypy
 
-from backend.db import init_database
+from backend.db import db, init_database
 from backend.application import Exercises
 
 
 def cors():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
 
+def profile():
+    import pdb; pdb.set_trace()
+    cherrypy.request.profile = db.client.profiles.find_one({
+        'user': 'linoy'
+    })
+
 
 if __name__ == '__main__':
     cherrypy.tools.cors = cherrypy.Tool('before_finalize', cors)
-    cherrypy.config.update("server.conf")
+    cherrypy.tools.profile= cherrypy.Tool('on_start_resource', profile)
 
+    cherrypy.config.update('server.conf')
     init_database()
-    cherrypy.tree.mount(Exercises(), '/exercises', {'/': {'tools.cors.on': True}})
+
+    config = {'/': {
+        'tools.cors.on': True,
+        'tools.profile.on': True
+    }}
+    cherrypy.tree.mount(Exercises(), '/exercises', config)
 
     cherrypy.engine.start()
     cherrypy.engine.block()
