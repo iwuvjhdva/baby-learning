@@ -1,6 +1,7 @@
 import random
 
-from backend.db import db
+import cherrypy
+
 from backend.exercises.base import BaseExercise
 
 # TODO: daily limit
@@ -30,13 +31,15 @@ class MathStates:
 class Math(BaseExercise):
     bit_type = 'math'
 
-    def __init__(self, math_profile):
-        self.profile = math_profile
-        self._next_state = self.profile['state']
+    def __init__(self):
+        self._profile = cherrypy.request.profile['courses']['math']
+        self._next_state = self._profile['state']
 
     def perform(self):
-        state = self.profile['state'].copy()
-        state_name = self.profile['state']['name']
+        super().perform()
+
+        state = self._profile['state'].copy()
+        state_name = self._profile['state']['name']
 
         if state_name == MathStates.none:
             bits = self._create_quantity_bits(range(1, 6), shuffle=False)
@@ -50,8 +53,12 @@ class Math(BaseExercise):
             else:
                 state['name'] = MathStates.quantity_1_5
         elif state_name == MathStates.quantity_1_10:
-            state = dict(name=MathStates.quantity_1_5, counter=0)
-            bits = self._create_quantity_bits(range(1, 6))
+            if state['counter'] == 0:
+                self._verify_day_passed()
+                bits = self._create_quantity_bits(range(6, 11), shuffle=False)
+            else:
+                bits = self._create_quantity_bits(range(6, 11))
+            state = dict(name=MathStates.quantity_1_10, counter=1)
         else:
             bits = None
 

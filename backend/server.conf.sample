@@ -1,3 +1,6 @@
+[general]
+debug = False
+
 [database]
 mongodb_uri = "mongodb://localhost"
 mongodb_name = "baby_learning"
