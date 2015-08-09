@@ -17,6 +17,8 @@ def profile():
 
 
 if __name__ == '__main__':
+    cherrypy.server.socket_host = '0.0.0.0'
+
     cherrypy.tools.cors = cherrypy.Tool('before_finalize', cors)
     cherrypy.tools.profile = cherrypy.Tool('on_start_resource', profile)
 

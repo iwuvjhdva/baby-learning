@@ -43,7 +43,6 @@ class Math(BaseExercise):
         state_name = self._profile['state']['name']
 
         if state_name == MathStates.none:
-            cherrypy.log.debug
             bits = self._create_quantity_bits(range(1, 6), shuffle=False)
             state = dict(name=MathStates.quantity_1_5, counter=0)
         elif state_name == MathStates.quantity_1_5:

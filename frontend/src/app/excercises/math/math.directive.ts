@@ -33,7 +33,7 @@ module babyLearning {
     public label: string;
 
     constructor() {
-      this.radius = 2.75;
+      this.radius = 5;
       this.currentBitIndex = 0;
       this.drawDots();
     }

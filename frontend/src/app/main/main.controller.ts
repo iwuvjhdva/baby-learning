@@ -15,7 +15,7 @@ module babyLearning {
     loadNext() {
       var self = this;
 
-      this.$http.get('http://localhost:8080/exercises/next')
+      this.$http.get('http://192.168.0.107:8080/exercises/next')
         .success(function (response: any) {
           self.bits = response.bits;
         });
