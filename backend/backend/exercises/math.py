@@ -13,7 +13,8 @@ class MathStates:
     none = None
     quantity_1_5 = '1-5'
     quantity_1_10 = '1-10'
-    quantity_1_20 = '1-20'
+    quantity_1_10_shuffle = '1-10-shuffle'
+    quantity_11_20 = '11-20'
     addition = 'addition'
     multiplication = 'multiplication'
     zero = 'zero'
@@ -42,6 +43,7 @@ class Math(BaseExercise):
         state_name = self._profile['state']['name']
 
         if state_name == MathStates.none:
+            cherrypy.log.debug
             bits = self._create_quantity_bits(range(1, 6), shuffle=False)
             state = dict(name=MathStates.quantity_1_5, counter=0)
         elif state_name == MathStates.quantity_1_5:
@@ -50,19 +52,68 @@ class Math(BaseExercise):
 
             if state['counter'] >= 2:
                 state = dict(name=MathStates.quantity_1_10, counter=0)
-            else:
-                state['name'] = MathStates.quantity_1_5
         elif state_name == MathStates.quantity_1_10:
             if state['counter'] == 0:
                 self._verify_day_passed()
                 bits = self._create_quantity_bits(range(6, 11), shuffle=False)
             else:
-                bits = self._create_quantity_bits(range(6, 11))
-            state = dict(name=MathStates.quantity_1_10, counter=1)
+                if state['counter'] % 2:
+                    bits_range = range(1, 6)
+                else:
+                    bits_range = range(6, 11)
+                bits = self._create_quantity_bits(bits_range)
+
+            state['counter'] += 1
+            if state['counter'] >= 6:
+                state = dict(
+                    name=MathStates.quantity_1_10_shuffle,
+                    counter=0,
+                    days_counter=0
+                )
+        elif state_name == MathStates.quantity_1_10_shuffle:
+            bits = self._perform_two_shuffled_sets(range(1, 11), state)
+            if state['days_counter'] >= 5:
+                state = dict(
+                    name=MathStates.quantity_11_20,
+                    counter=0,
+                    days_counter=0
+                )
+        elif state_name == MathStates.quantity_11_20:
+            bits_range = range(2 + state['days_counter'],
+                               12 + state['days_counter'])
+
+            bits = self._perform_two_shuffled_sets(bits_range, state)
+
+            if state['days_counter'] >= 10:
+                state = dict(name=MathStates.addition, counter=0)
         else:
             bits = None
 
         self._update_state(state)
+
+        return bits
+
+    def _perform_two_shuffled_sets(self, bits_range, state):
+        if state['counter'] == 0:
+            self._verify_day_passed()
+
+            # Saving two sets from 1-10
+            two_sets = random.shuffle(bits_range)
+            state['set1'] = two_sets[:5]
+            state['set2'] = two_sets[5:]
+
+        if state['counter'] % 2:
+            bits_range = state['set1']
+        else:
+            bits_range = state['set2']
+
+        bits = self._create_quantity_bits(bits_range)
+
+        state['counter'] += 1
+
+        if state['counter'] >= 6:
+            state['counter'] = 0
+            state['days_counter'] += 1
 
         return bits
 

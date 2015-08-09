@@ -5,5 +5,7 @@
     ng-attr-r="{{vm.radius}}%"
     fill="red" />
 
-  <text x="98%" y="96%" text-anchor="end" fill="black" ng-bind="vm.label"></text>
+  <text x="98%" y="96%" text-anchor="end" fill="black">
+    <tspan ng-bind="vm.label"></tspan>
+  </text>
 </svg>

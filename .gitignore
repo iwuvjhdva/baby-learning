@@ -2,8 +2,11 @@
 *.swo
 *.swn
 *~
-backend/Gemfile.lock
-backend/coverage
+*.orig
+*.pyc
+
+__pycache__
+backend/server.conf
 frontend/.tmp
 frontend/dist
 frontend/node_modules
