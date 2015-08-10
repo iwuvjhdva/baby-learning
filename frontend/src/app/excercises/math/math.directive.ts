@@ -81,13 +81,12 @@ module babyLearning {
     nextBit() {
       this.currentBitIndex++;
 
-      if (this.currentBitIndex == this.bits.length) {
+      if (this.currentBitIndex === this.bits.length) {
         this.showEndScreen = true;
-      } else if (this.currentBitIndex > this.bits.length) {
-        this.showEndScreen = false;
-        this.currentBitIndex = 0;
+        this.currentBitIndex = -1;
         this.onOver();
       } else {
+        this.showEndScreen = false;
         this.drawDots();
       }
     }
