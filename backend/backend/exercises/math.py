@@ -4,9 +4,16 @@ import cherrypy
 
 from backend.exercises.base import BaseExercise
 
-# TODO: daily limit
+# TODO: red screen last bit
+# TODO: dots intersection
+# TODO: dots overflow
+# TODO: different exercises support on client
+
 # TODO: tests
 # TODO: quanitities 200, 300, 400, 500, 600, 700, 800, 900, 1000, 10000
+# TODO: at least equality
+# TODO: deploy on AWS
+# TODO: unit tests
 
 
 class MathStates:

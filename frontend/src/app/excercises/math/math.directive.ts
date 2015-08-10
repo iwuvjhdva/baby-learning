@@ -31,6 +31,7 @@ module babyLearning {
     public currentBitIndex: number;
     public dots: IDot[];
     public label: string;
+    public showEndScreen: boolean = false;
 
     constructor() {
       this.radius = 5;
@@ -43,7 +44,6 @@ module babyLearning {
       var currentBit = this.bits[this.currentBitIndex];
 
       this.label = currentBit.label;
-      console.log(currentBit.label);
 
       for (var index = 0; index < currentBit.quantity; index++) {
         do {
@@ -81,11 +81,15 @@ module babyLearning {
     nextBit() {
       this.currentBitIndex++;
 
-      if (this.currentBitIndex >= this.bits.length) {
+      if (this.currentBitIndex == this.bits.length) {
+        this.showEndScreen = true;
+      } else if (this.currentBitIndex > this.bits.length) {
+        this.showEndScreen = false;
         this.currentBitIndex = 0;
         this.onOver();
+      } else {
+        this.drawDots();
       }
-      this.drawDots();
     }
   }
 }
