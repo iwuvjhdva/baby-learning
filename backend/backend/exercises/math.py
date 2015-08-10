@@ -4,7 +4,6 @@ import cherrypy
 
 from backend.exercises.base import BaseExercise
 
-# TODO: red screen last bit
 # TODO: dots intersection
 # TODO: dots overflow
 # TODO: different exercises support on client
@@ -104,7 +103,8 @@ class Math(BaseExercise):
             self._verify_day_passed()
 
             # Saving two sets from 1-10
-            two_sets = random.shuffle(bits_range)
+            two_sets = list(bits_range)
+            random.shuffle(two_sets)
             state['set1'] = two_sets[:5]
             state['set2'] = two_sets[5:]
 
