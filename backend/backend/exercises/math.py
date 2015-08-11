@@ -8,6 +8,7 @@ from backend.exercises.base import BaseExercise
 # TODO: dots overflow
 # TODO: different exercises support on client
 
+# TODO: status save
 # TODO: tests
 # TODO: quanitities 200, 300, 400, 500, 600, 700, 800, 900, 1000, 10000
 # TODO: at least equality
@@ -22,6 +23,7 @@ class MathStates:
     quantity_1_10_shuffle = '1-10-shuffle'
     quantity_11_20 = '11-20'
     addition = 'addition'
+    subtraction = 'subtraction'
     multiplication = 'multiplication'
     zero = 'zero'
     division = 'division'
@@ -84,13 +86,45 @@ class Math(BaseExercise):
                     days_counter=0
                 )
         elif state_name == MathStates.quantity_11_20:
-            bits_range = range(2 + state['days_counter'],
-                               12 + state['days_counter'])
+            number_offset = state['days_counter'] * 2
+            bits_range = range(3 + number_offset, 13 + number_offset)
 
             bits = self._perform_two_shuffled_sets(bits_range, state)
 
-            if state['days_counter'] >= 10:
+            if state['days_counter'] >= 5:
                 state = dict(name=MathStates.addition, counter=0)
+        elif state_name == MathStates.addition:
+            if state['counter'] % 3 == 1:
+                number_offset = state['days_counter'] * 2
+                bits_range = range(13 + number_offset, 23 + number_offset)
+                bits = self._perform_two_shuffled_sets(bits_range, state)
+            else:
+                case_result = random.randint(2, 23 + state['days_counter'] * 2)
+                first_member = random.randint(1, case_result)
+                second_member = case_result - first_member
+                label = lambda tpl: tpl.format(first_member,
+                                               second_member,
+                                               case_result)
+                bits = [
+                    {
+                        'type': 'math',
+                        'kind': 'case',
+                        'label': label("_{}_ + {} = {}")
+                    },
+                    {
+                        'type': 'math',
+                        'kind': 'case',
+                        'label': label("{} + _{}_ = {}")
+                    },
+                    {
+                        'type': 'math',
+                        'kind': 'case',
+                        'label': label("{} + {} = _{}_")
+                    },
+                ]
+
+            if state['counter'] >= 9:
+                state['days_counter'] += 1
         else:
             bits = None
 
