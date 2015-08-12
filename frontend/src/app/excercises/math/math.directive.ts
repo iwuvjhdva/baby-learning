@@ -23,6 +23,11 @@ module babyLearning {
     y: number;
   }
 
+  interface ILabelFragment {
+    text: string;
+    highlight: boolean;
+  }
+
   /** @ngInject */
   class MathExcerciseController {
     public radius: number;
@@ -30,7 +35,7 @@ module babyLearning {
     public onOver: { (): void; };
     public currentBitIndex: number;
     public dots: IDot[];
-    public label: string;
+    public labelFragments: ILabelFragment[];
     public showEndScreen: boolean = false;
 
     constructor() {
@@ -43,7 +48,7 @@ module babyLearning {
       this.dots = [];
       var currentBit = this.bits[this.currentBitIndex];
 
-      this.label = currentBit.label;
+      this.labelFragments = this.getLabelFragments(currentBit.label);
 
       for (var index = 0; index < currentBit.quantity; index++) {
         do {
@@ -55,6 +60,28 @@ module babyLearning {
 
         this.dots.push(dot);
       }
+    }
+
+    getLabelFragments(label: string) {
+      var fragments: ILabelFragment[];
+      var boldFlag = false;
+
+      for (var text in label.split('_')) {
+        if (text === '') {
+          continue;
+        } else {
+          boldFlag = !boldFlag;
+        }
+
+        var fragment: ILabelFragment = {
+          text: text,
+          highlight: boldFlag
+        };
+
+        fragments.push(fragment)
+      }
+
+      return fragments;
     }
 
     getRandomCoord() {
