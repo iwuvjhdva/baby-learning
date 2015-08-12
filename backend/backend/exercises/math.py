@@ -4,17 +4,6 @@ import cherrypy
 
 from backend.exercises.base import BaseExercise
 
-# TODO: dots intersection
-# TODO: dots overflow
-# TODO: different exercises support on client
-
-# TODO: status save
-# TODO: tests
-# TODO: quanitities 200, 300, 400, 500, 600, 700, 800, 900, 1000, 10000
-# TODO: at least equality
-# TODO: deploy on AWS
-# TODO: unit tests
-
 
 class MathStates:
     none = None
@@ -109,16 +98,19 @@ class Math(BaseExercise):
                     {
                         'type': 'math',
                         'kind': 'case',
+                        'quantity': first_member,
                         'label': label("_{}_ + {} = {}")
                     },
                     {
                         'type': 'math',
                         'kind': 'case',
+                        'quantity': second_member,
                         'label': label("{} + _{}_ = {}")
                     },
                     {
                         'type': 'math',
                         'kind': 'case',
+                        'quantity': case_result,
                         'label': label("{} + {} = _{}_")
                     },
                 ]
