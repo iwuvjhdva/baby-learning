@@ -67,56 +67,64 @@ class Math(BaseExercise):
                     days_counter=0
                 )
         elif state_name == MathStates.quantity_1_10_shuffle:
-            bits = self._perform_two_shuffled_sets(range(1, 11), state)
+            bits = self._get_two_shuffled_sets_bits(range(1, 11), state)
+            self._iterate_days_counter(state, 6)
             if state['days_counter'] >= 5:
                 state = dict(
                     name=MathStates.quantity_11_20,
                     counter=0,
-                    days_counter=0
+                    days_counter=0,
+                    loop_days_counter=0
                 )
         elif state_name == MathStates.quantity_11_20:
-            number_offset = state['days_counter'] * 2
-            bits_range = range(3 + number_offset, 13 + number_offset)
-
-            bits = self._perform_two_shuffled_sets(bits_range, state)
+            bits = self._get_main_quantity_loop_bits(state)
+            self._iterate_days_counter(state, 6)
 
             if state['days_counter'] >= 5:
-                state = dict(name=MathStates.addition, counter=0)
+                state = dict(
+                    name=MathStates.addition,
+                    counter=0,
+                    loop_days_counter=state['loop_days_counter']
+                )
         elif state_name == MathStates.addition:
-            if state['counter'] % 3 == 1:
-                number_offset = state['days_counter'] * 2
-                bits_range = range(13 + number_offset, 23 + number_offset)
-                bits = self._perform_two_shuffled_sets(bits_range, state)
-            else:
-                case_result = random.randint(2, 23 + state['days_counter'] * 2)
-                first_member = random.randint(1, case_result)
-                second_member = case_result - first_member
-                label = lambda tpl: tpl.format(first_member,
-                                               second_member,
-                                               case_result)
-                bits = [
-                    {
-                        'type': 'math',
-                        'kind': 'case',
-                        'quantity': first_member,
-                        'label': label("_{}_ + {} = {}")
-                    },
-                    {
-                        'type': 'math',
-                        'kind': 'case',
-                        'quantity': second_member,
-                        'label': label("{} + _{}_ = {}")
-                    },
-                    {
-                        'type': 'math',
-                        'kind': 'case',
-                        'quantity': case_result,
-                        'label': label("{} + {} = _{}_")
-                    },
-                ]
+            def _members():
+                # TODO: fix zero
+                case_result = self._get_sample_case_member()
+                first = random.randint(1, case_result)
+                return (first, case_result - first, case_result)
 
-            if state['counter'] >= 9:
-                state['days_counter'] += 1
+            return self._process_equation_state(state, '+', _members,
+                                                MathStates.subtraction)
+        elif state_name == MathStates.subtraction:
+            def _members():
+                # TODO: fix zero
+                max_num = self._get_max_learned_number()
+                first = random.randint(1, max_num)
+                second = random.randint(max_num - first)
+                case_result = first - second
+                random.randint(1, case_result)
+                return (first, case_result - first, case_result)
+
+            return self._process_equation_state(state, '-', _members,
+                                                MathStates.multiplication)
+        elif state_name == MathStates.multiplication:
+            def _members():
+                approx_result = self._get_sample_case_member()
+                first = random.randint(1, approx_result)
+                second = int(approx_result / first)
+                return (first, second, first * second)
+
+            return self._process_equation_state(state, '*', _members,
+                                                MathStates.division)
+        elif state_name == MathStates.division:
+            def _members():
+                # approx_result = self._get_sample_case_member()
+                # first = random.randint(1, approx_result)
+                # second = int(approx_result / first)
+                return (first, second, first * second)
+
+            return self._process_equation_state(state, '*', _members,
+                                                MathStates.complex_equality_3)
         else:
             bits = None
 
@@ -124,7 +132,51 @@ class Math(BaseExercise):
 
         return bits
 
-    def _perform_two_shuffled_sets(self, bits_range, state):
+    def _get_equation_bits(self, first, second, result, op):
+        label = lambda tpl: tpl.format(first, op, second, result)
+
+        bits = [
+            {
+                'type': 'math',
+                'kind': 'quantity',
+                'quantity': first,
+                'label': label("_{}_ {} {} = {}")
+            },
+            {
+                'type': 'math',
+                'kind': 'quantity',
+                'quantity': second,
+                'label': label("{} {} _{}_ = {}")
+            },
+            {
+                'type': 'math',
+                'kind': 'quantity',
+                'quantity': result,
+                'label': label("{} {} {} = _{}_")
+            },
+        ]
+
+        return bits
+
+    def _process_equation_state(self, state, op, members_func, next_state):
+        if state['counter'] % 3 != 1:
+            bits = self._get_main_quantity_loop_bits(state)
+        else:
+            first, second, case_result = members_func()
+            bits = self._get_equation_bits(first, second, case_result, '+')
+
+        self._iterate_days_counter(state, 9)
+
+        if state['days_counter'] >= 14:
+            state = dict(
+                name=MathStates.subtraction,
+                counter=0,
+                loop_days_counter=state['loop_days_counter']
+            )
+
+        return bits
+
+    def _get_two_shuffled_sets_bits(self, bits_range, state):
         if state['counter'] == 0:
             self._verify_day_passed()
 
@@ -143,11 +195,27 @@ class Math(BaseExercise):
 
         state['counter'] += 1
 
-        if state['counter'] >= 6:
+        return bits
+
+    def _get_main_quantity_loop_bits(self, state):
+        number_offset = state['loop_days_counter'] * 2
+        bits_range = range(3 + number_offset, 13 + number_offset)
+        self._get_two_shuffled_sets_bits(bits_range, state)
+
+    def _get_sample_case_member(self, state):
+        max_learned_number = self._get_max_learned_number(state)
+        case_result = random.randint(2, max_learned_number)
+        return case_result
+
+    def _get_max_learned_number(self, state):
+        return 3 + state['loop_days_counter'] * 2
+
+    def _iterate_days_counter(self, state, exercises_per_day_num):
+        if state['counter'] >= exercises_per_day_num:
             state['counter'] = 0
             state['days_counter'] += 1
-
-        return bits
+            if 'loop_days_counter' in state:
+                state['loop_days_counter'] += 1
 
     def _create_quantity_bits(self, quantities, shuffle=True):
         bits = [{
