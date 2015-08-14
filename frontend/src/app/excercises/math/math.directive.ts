@@ -63,12 +63,13 @@ module babyLearning {
     }
 
     getLabelFragments(label: string) {
-      var fragments: ILabelFragment[];
+      var fragments: ILabelFragment[] = [];
       var boldFlag = false;
+      var texts: string[] = label.split('_');
 
-      for (var text in label.split('_')) {
+      texts.forEach((text: string) => {
         if (text === '') {
-          continue;
+          return;
         } else {
           boldFlag = !boldFlag;
         }
@@ -78,8 +79,8 @@ module babyLearning {
           highlight: boldFlag
         };
 
-        fragments.push(fragment)
-      }
+        fragments.push(fragment);
+      });
 
       return fragments;
     }

@@ -84,46 +84,43 @@ class Math(BaseExercise):
                 state = dict(
                     name=MathStates.addition,
                     counter=0,
+                    days_counter=0,
                     loop_days_counter=state['loop_days_counter']
                 )
         elif state_name == MathStates.addition:
             def _members():
-                # TODO: fix zero
-                case_result = self._get_sample_case_member()
-                first = random.randint(1, case_result)
+                case_result = self._get_sample_case_member(state)
+                first = random.randint(1, case_result - 1)
                 return (first, case_result - first, case_result)
 
-            return self._process_equation_state(state, '+', _members,
+            bits = self._process_equation_state(state, '+', _members,
                                                 MathStates.subtraction)
         elif state_name == MathStates.subtraction:
             def _members():
                 # TODO: fix zero
-                max_num = self._get_max_learned_number()
-                first = random.randint(1, max_num)
+                max_num = self._get_max_learned_number(state)
+                first = random.randint(2, max_num - 1)
                 second = random.randint(max_num - first)
-                case_result = first - second
-                random.randint(1, case_result)
-                return (first, case_result - first, case_result)
+                return (first, second, first - second)
 
-            return self._process_equation_state(state, '-', _members,
+            bits = self._process_equation_state(state, '-', _members,
                                                 MathStates.multiplication)
         elif state_name == MathStates.multiplication:
             def _members():
-                approx_result = self._get_sample_case_member()
+                approx_result = self._get_sample_case_member(state)
                 first = random.randint(1, approx_result)
                 second = int(approx_result / first)
                 return (first, second, first * second)
 
-            return self._process_equation_state(state, '*', _members,
+            bits = self._process_equation_state(state, '*', _members,
                                                 MathStates.division)
         elif state_name == MathStates.division:
             def _members():
-                # approx_result = self._get_sample_case_member()
-                # first = random.randint(1, approx_result)
-                # second = int(approx_result / first)
-                return (first, second, first * second)
+                first = self._get_sample_case_member(state)
+                second = random.randint(1, first + 1)
+                return (first, second, int(first / second))
 
-            return self._process_equation_state(state, '*', _members,
+            bits = self._process_equation_state(state, '*', _members,
                                                 MathStates.complex_equality_3)
         else:
             bits = None
@@ -132,45 +129,50 @@ class Math(BaseExercise):
 
         return bits
 
-    def _get_equation_bits(self, first, second, result, op):
-        label = lambda tpl: tpl.format(first, op, second, result)
+    def _get_equation_bits(self, members_func, op):
+        bits = []
 
-        bits = [
-            {
-                'type': 'math',
-                'kind': 'quantity',
-                'quantity': first,
-                'label': label("_{}_ {} {} = {}")
-            },
-            {
-                'type': 'math',
-                'kind': 'quantity',
-                'quantity': second,
-                'label': label("{} {} _{}_ = {}")
-            },
-            {
-                'type': 'math',
-                'kind': 'quantity',
-                'quantity': result,
-                'label': label("{} {} {} = _{}_")
-            },
-        ]
+        for case in range(3):
+            first, second, result = members_func()
+            label = lambda tpl: tpl.format(first, op, second, result)
+
+            bits += [
+                {
+                    'type': 'math',
+                    'kind': 'quantity',
+                    'quantity': first,
+                    'label': label("_{}_ {} {} = {}")
+                },
+                {
+                    'type': 'math',
+                    'kind': 'quantity',
+                    'quantity': second,
+                    'label': label("{} {} _{}_ = {}")
+                },
+                {
+                    'type': 'math',
+                    'kind': 'quantity',
+                    'quantity': result,
+                    'label': label("{} {} {} = _{}_")
+                },
+            ]
 
         return bits
 
     def _process_equation_state(self, state, op, members_func, next_state):
-        if state['counter'] % 3 != 1:
-            bits = self._get_main_quantity_loop_bits(state)
+        if state['counter'] % 3 == 1:
+            bits = self._get_equation_bits(members_func, op)
+            state['counter'] += 1
         else:
-            first, second, case_result = members_func()
-            bits = self._get_equation_bits(first, second, case_result, '+')
+            bits = self._get_main_quantity_loop_bits(state)
 
         self._iterate_days_counter(state, 9)
 
         if state['days_counter'] >= 14:
             state = dict(
-                name=MathStates.subtraction,
+                name=next_state,
                 counter=0,
+                days_counter=0,
                 loop_days_counter=state['loop_days_counter']
             )
 
@@ -200,7 +202,7 @@ class Math(BaseExercise):
     def _get_main_quantity_loop_bits(self, state):
         number_offset = state['loop_days_counter'] * 2
         bits_range = range(3 + number_offset, 13 + number_offset)
-        self._get_two_shuffled_sets_bits(bits_range, state)
+        return self._get_two_shuffled_sets_bits(bits_range, state)
 
     def _get_sample_case_member(self, state):
         max_learned_number = self._get_max_learned_number(state)

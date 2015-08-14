@@ -7,8 +7,8 @@
 
   <text x="98%" y="96%" text-anchor="end" fill="black">
     <tspan ng-repeat="fragment in vm.labelFragments"
-      ng-bind="vm.fragment.text"
-      ng-attr-style="{{ vm.fragment.highlight ? 'font-weight: bold' : '' }}">
+      ng-bind="fragment.text"
+      ng-attr-style="{{ fragment.highlight ? 'font-weight: bold' : '' }}">
     </tspan>
   </text>
 
