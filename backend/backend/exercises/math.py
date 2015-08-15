@@ -1,3 +1,4 @@
+import math
 import random
 
 import cherrypy
@@ -97,10 +98,9 @@ class Math(BaseExercise):
                                                 MathStates.subtraction)
         elif state_name == MathStates.subtraction:
             def _members():
-                # TODO: fix zero
                 max_num = self._get_max_learned_number(state)
                 first = random.randint(2, max_num - 1)
-                second = random.randint(max_num - first)
+                second = random.randint(1, first)
                 return (first, second, first - second)
 
             bits = self._process_equation_state(state, '-', _members,
@@ -108,19 +108,23 @@ class Math(BaseExercise):
         elif state_name == MathStates.multiplication:
             def _members():
                 approx_result = self._get_sample_case_member(state)
-                first = random.randint(1, approx_result)
+                first = random.randint(1, int(math.sqrt(approx_result) * 2))
                 second = int(approx_result / first)
+                if random.randint(0, 1):
+                    first, second = second, first
                 return (first, second, first * second)
 
             bits = self._process_equation_state(state, '*', _members,
                                                 MathStates.division)
         elif state_name == MathStates.division:
             def _members():
-                first = self._get_sample_case_member(state)
-                second = random.randint(1, first + 1)
-                return (first, second, int(first / second))
+                approx_first = self._get_sample_case_member(state)
+                second = random.randint(1, int(math.sqrt(approx_first) * 2))
+                result = int(approx_first / second)
+                first = int(result * second)
+                return (first, second, result)
 
-            bits = self._process_equation_state(state, '*', _members,
+            bits = self._process_equation_state(state, ':', _members,
                                                 MathStates.complex_equality_3)
         else:
             bits = None
@@ -169,12 +173,12 @@ class Math(BaseExercise):
         self._iterate_days_counter(state, 9)
 
         if state['days_counter'] >= 14:
-            state = dict(
+            state.update(dict(
                 name=next_state,
                 counter=0,
                 days_counter=0,
                 loop_days_counter=state['loop_days_counter']
-            )
+            ))
 
         return bits
 
@@ -210,7 +214,13 @@ class Math(BaseExercise):
         return case_result
 
     def _get_max_learned_number(self, state):
-        return 3 + state['loop_days_counter'] * 2
+        result = 3 + state['loop_days_counter'] * 2
+
+        if state['days_counter'] == 0 and result > 20:
+            result = 20
+        else:
+            result = 3 + state['loop_days_counter'] * 2
+        return result
 
     def _iterate_days_counter(self, state, exercises_per_day_num):
         if state['counter'] >= exercises_per_day_num:
