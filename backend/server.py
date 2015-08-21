@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+import os
+
 import cherrypy
 
 from backend.db import db, init_database
@@ -16,13 +18,13 @@ def profile():
     })
 
 
-if __name__ == '__main__':
-    cherrypy.server.socket_host = '0.0.0.0'
-
+def initialize():
     cherrypy.tools.cors = cherrypy.Tool('before_finalize', cors)
     cherrypy.tools.profile = cherrypy.Tool('on_start_resource', profile)
 
-    cherrypy.config.update('server.conf')
+    root_path = os.path.dirname(os.path.abspath(__file__))
+    cherrypy.config.update(os.path.join(root_path, 'server.conf'))
+
     init_database()
 
     config = {'/': {
@@ -30,6 +32,17 @@ if __name__ == '__main__':
         'tools.profile.on': True
     }}
     cherrypy.tree.mount(Exercises(), '/exercises', config)
+
+
+def application(environ, start_response):
+    initialize()
+    return cherrypy.tree(environ, start_response)
+
+
+if __name__ == '__main__':
+    cherrypy.server.socket_host = '0.0.0.0'
+
+    initialize()
 
     cherrypy.engine.start()
     cherrypy.engine.block()
