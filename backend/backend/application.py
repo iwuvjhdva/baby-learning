@@ -12,12 +12,10 @@ class Exercises:
     @cherrypy.tools.json_out()
     def next(self):
         try:
-            bits = Math().perform()
+            exercise = Math().perform()
         except TakeABreakException as e:
-            bits = TakeABreak(e.time_passed).perform()
+            exercise = TakeABreak(e.time_passed).perform()
         except WaitForTomorrowException:
-            bits = WaitForTomorrow().perform()
+            exercise = WaitForTomorrow().perform()
 
-        return {
-            'bits': bits
-        }
+        return exercise

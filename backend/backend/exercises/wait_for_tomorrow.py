@@ -3,7 +3,7 @@ from backend.exercises.base import BaseExercise
 
 class WaitForTomorrow(BaseExercise):
     def perform(self):
-        bits = [{
+        exercise = {
             'type': 'wait_for_tomorrow',
-        }]
-        return bits
+        }
+        return exercise

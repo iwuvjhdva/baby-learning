@@ -7,7 +7,7 @@ module babyLearning {
     return {
       restrict: 'E',
       scope: {
-        bits: '=',
+        exercise: '=',
         onOver: '&'
       },
       templateUrl: 'app/excercises/math/math.html',

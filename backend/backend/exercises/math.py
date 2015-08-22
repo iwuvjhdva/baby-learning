@@ -28,8 +28,6 @@ class MathStates:
 
 
 class Math(BaseExercise):
-    bit_type = 'math'
-
     def __init__(self):
         self._profile = cherrypy.request.profile['courses']['math']
         self._next_state = self._profile['state']
@@ -131,7 +129,13 @@ class Math(BaseExercise):
 
         self._update_state(state)
 
-        return bits
+        exercise = {
+            'type': 'math',
+            'kind': 'quantity',
+            'bits': bits,
+        }
+
+        return exercise
 
     def _get_equation_bits(self, members_func, op):
         bits = []
@@ -142,20 +146,14 @@ class Math(BaseExercise):
 
             bits += [
                 {
-                    'type': 'math',
-                    'kind': 'quantity',
                     'quantity': first,
                     'label': label("_{}_ {} {} = {}")
                 },
                 {
-                    'type': 'math',
-                    'kind': 'quantity',
                     'quantity': second,
                     'label': label("{} {} _{}_ = {}")
                 },
                 {
-                    'type': 'math',
-                    'kind': 'quantity',
                     'quantity': result,
                     'label': label("{} {} {} = _{}_")
                 },
@@ -231,8 +229,6 @@ class Math(BaseExercise):
 
     def _create_quantity_bits(self, quantities, shuffle=True):
         bits = [{
-            'type': 'math',
-            'kind': 'quantity',
             'quantity': quantity,
             'label': str(quantity)
         } for quantity in quantities]
