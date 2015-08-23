@@ -19,13 +19,14 @@ module babyLearning {
   }
 
   /** @ngInject */
-  class MathExcerciseController {
+  class MessageExcerciseController {
     public bits: any[];
     public message: string;
+    public comment: string;
 
     constructor() {
-      this.message = bits[0].message;
-      this.comment = bits[0].comment;
+      this.message = this.bits[0].message;
+      this.comment = this.bits[0].comment;
     }
   }
 }

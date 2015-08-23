@@ -6,8 +6,12 @@ class TakeABreak(BaseExercise):
         self._time_passed = time_passed
 
     def perform(self):
+        minutes_left = 30 - int(self._time_passed.seconds / 60)
         exercise = {
-            'type': 'take_a_break',
-            'minutesLeft': 30 - int(self._time_passed.seconds / 60)
+            'type': 'message',
+            'bits': [{
+                'message': "Take a break",
+                'comment': "Just {} minutes left".format(minutes_left)
+            }]
         }
         return exercise

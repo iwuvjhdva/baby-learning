@@ -1,5 +1,8 @@
 <div>
   <md-content>
-    <math-excercise ng-if="main.bits.length" exercise="main.bits" on-over="main.loadNext()"></math-excercise>
+    <div ng-if="main.bits.length" align="center">
+      <math-excercise ng-if="main.type == 'math'" bits="main.bits" on-over="main.loadNext()"></math-excercise>
+      <message-excercise ng-if="main.type == 'message'" bits="main.bits" on-over="main.loadNext()"></message-excercise>
+    </div>
   </md-content>
 </div>

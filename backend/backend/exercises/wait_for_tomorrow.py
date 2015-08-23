@@ -4,6 +4,9 @@ from backend.exercises.base import BaseExercise
 class WaitForTomorrow(BaseExercise):
     def perform(self):
         exercise = {
-            'type': 'wait_for_tomorrow',
+            'type': 'message',
+            'bits': [{
+                'message': "Wait for tomorrow"
+            }]
         }
         return exercise

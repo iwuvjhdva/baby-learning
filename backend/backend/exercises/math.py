@@ -28,6 +28,8 @@ class MathStates:
 
 
 class Math(BaseExercise):
+    bit_type = 'math'
+
     def __init__(self):
         self._profile = cherrypy.request.profile['courses']['math']
         self._next_state = self._profile['state']
