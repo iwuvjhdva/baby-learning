@@ -7,7 +7,12 @@
 
 <div>
   <md-content>
-    <div ng-swipe-left="main.nextBit()" ng-if="main.bits.length" align="center">
+    <div ng-swipe-left="main.nextBit()"
+        ng-keydown="$event.which === 39 ? main.nextBit() : 0"
+        ng-if="main.bits.length"
+        align="center"
+        tabindex="0">
+
       <math-excercise ng-if="main.type == 'math'" bits="main.bits" on-over="main.nextExercise()"></math-excercise>
       <message-excercise ng-if="main.type == 'message'" bits="main.bits" on-over="main.nextExercise()"></message-excercise>
     </div>
