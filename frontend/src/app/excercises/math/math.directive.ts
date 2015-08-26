@@ -38,10 +38,14 @@ module babyLearning {
     public labelFragments: ILabelFragment[];
     public showEndScreen: boolean = false;
 
-    constructor() {
+    constructor($scope: ng.IScope) {
       this.radius = 5;
       this.currentBitIndex = 0;
       this.drawDots();
+
+      $scope.$on('nextBit', () => {
+        this.nextBit();
+      });
     }
 
     drawDots() {

@@ -1,9 +1,9 @@
-<svg ng-swipe-left="vm.nextBit()">
+<svg>
   <circle ng-repeat="dot in vm.dots"
-    ng-attr-cx="{{ dot.x }}%"
-    ng-attr-cy="{{ dot.y }}%"
-    ng-attr-r="{{vm.radius}}%"
-    fill="red" />
+  ng-attr-cx="{{ dot.x }}%"
+  ng-attr-cy="{{ dot.y }}%"
+  ng-attr-r="{{vm.radius}}%"
+  fill="red" />
 
   <text x="98%" y="96%" text-anchor="end" fill="black">
     <tspan ng-repeat="fragment in vm.labelFragments"

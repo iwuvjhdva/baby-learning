@@ -1,2 +1,8 @@
-<h1>{{ vm.message }}</h1>
-<p>{{ vm.comment }}</p>
+<svg>
+  <text text-anchor="middle" fill="black">
+    <tspan x="50%" y="40%" ng-bind="vm.message" style="font-size: 72px; font-weight: bold;">
+    </tspan>
+    <tspan x="50%" y="50%" ng-bind="vm.comment" style="font-size: 32px;">
+    </tspan>
+  </text>
+</svg>

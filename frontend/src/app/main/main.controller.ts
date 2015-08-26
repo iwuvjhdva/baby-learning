@@ -6,14 +6,20 @@ module babyLearning {
     public bits: Object[];
 
     private $http: ng.IHttpService;
+    private $scope: ng.IScope;
 
     /* @ngInject */
-    constructor ($http: ng.IHttpService) {
+    constructor ($scope: ng.IScope, $http: ng.IHttpService) {
+      this.$scope = $scope;
       this.$http = $http;
-      this.loadNext();
+      this.nextExercise();
     }
 
-    loadNext() {
+    nextBit() {
+      this.$scope.$broadcast('nextBit', {});
+    }
+
+    nextExercise() {
       var self = this;
 
       this.$http.get('http://127.0.0.1:8080/exercises/next')

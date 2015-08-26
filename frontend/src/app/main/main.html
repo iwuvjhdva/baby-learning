@@ -1,8 +1,15 @@
+<style>
+  svg {
+    width: 100%;
+    height: 100vh;
+  }
+</style>
+
 <div>
   <md-content>
-    <div ng-if="main.bits.length" align="center">
-      <math-excercise ng-if="main.type == 'math'" bits="main.bits" on-over="main.loadNext()"></math-excercise>
-      <message-excercise ng-if="main.type == 'message'" bits="main.bits" on-over="main.loadNext()"></message-excercise>
+    <div ng-swipe-left="main.nextBit()" ng-if="main.bits.length" align="center">
+      <math-excercise ng-if="main.type == 'math'" bits="main.bits" on-over="main.nextExercise()"></math-excercise>
+      <message-excercise ng-if="main.type == 'message'" bits="main.bits" on-over="main.nextExercise()"></message-excercise>
     </div>
   </md-content>
 </div>
