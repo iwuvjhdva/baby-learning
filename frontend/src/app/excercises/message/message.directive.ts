@@ -26,15 +26,20 @@ module babyLearning {
     public comment: string;
 
     constructor($scope: ng.IScope) {
-      this.message = this.bits[0].message;
-      this.comment = this.bits[0].comment;
+      this.update();
 
       $scope.$on('nextBit', () => {
         this.nextBit();
       });
     }
 
+    update() {
+      this.message = this.bits[0].message;
+      this.comment = this.bits[0].comment;
+    }
+
     nextBit() {
+      this.update();
       this.onOver();
     }
   }

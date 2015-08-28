@@ -115,6 +115,7 @@ module babyLearning {
 
       if (this.currentBitIndex === this.bits.length) {
         this.showEndScreen = true;
+      } else if (this.currentBitIndex > this.bits.length) {
         this.currentBitIndex = -1;
         this.onOver();
       } else {

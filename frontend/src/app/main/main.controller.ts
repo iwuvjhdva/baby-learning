@@ -20,12 +20,10 @@ module babyLearning {
     }
 
     nextExercise() {
-      var self = this;
-
       this.$http.get('http://127.0.0.1:8080/exercises/next')
-        .success(function (response: any) {
-          self.type = response.type;
-          self.bits = response.bits;
+        .success((response: any) => {
+          this.type = response.type;
+          this.bits = response.bits;
         });
     }
   }
