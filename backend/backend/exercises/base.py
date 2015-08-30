@@ -47,7 +47,7 @@ class BaseExercise:
                 self._last_exercised.date() >= now.date() or now.hour < 6):
             raise WaitForTomorrowException
 
-    def _update_state(self, state):
+    def _save_state(self, state):
         db.client.profiles.update(
             {
                 'user': 'linoy'

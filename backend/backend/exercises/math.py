@@ -34,9 +34,24 @@ class Math(BaseExercise):
         self._profile = cherrypy.request.profile['courses']['math']
         self._next_state = self._profile['state']
 
-    def perform(self):
+    def perform(self, update_state):
         super().perform()
 
+        _, bits = self._update_state()
+
+        if update_state:
+            state, bits = self._update_state()
+            self._save_state(state)
+
+        exercise = {
+            'type': 'math',
+            'kind': 'quantity',
+            'bits': bits,
+        }
+
+        return exercise
+
+    def _update_state(self):
         state = self._profile['state'].copy()
         state_name = self._profile['state']['name']
 
@@ -128,16 +143,8 @@ class Math(BaseExercise):
                                                 MathStates.complex_equality_3)
         else:
             bits = None
-
-        self._update_state(state)
-
-        exercise = {
-            'type': 'math',
-            'kind': 'quantity',
-            'bits': bits,
-        }
-
-        return exercise
+        
+        return state, bits
 
     def _get_equation_bits(self, members_func, op):
         bits = []

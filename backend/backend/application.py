@@ -10,9 +10,9 @@ from backend.exercises.base import (TakeABreakException,
 class Exercises:
     @cherrypy.expose
     @cherrypy.tools.json_out()
-    def next(self):
+    def next(self, save=False):
         try:
-            exercise = Math().perform()
+            exercise = Math().perform(update_state=bool(save))
         except TakeABreakException as e:
             exercise = TakeABreak(e.time_passed).perform()
         except WaitForTomorrowException:
