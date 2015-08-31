@@ -31,17 +31,14 @@ class Math(BaseExercise):
     bit_type = 'math'
 
     def __init__(self):
+        super().__init__()
         self._profile = cherrypy.request.profile['courses']['math']
         self._next_state = self._profile['state']
 
-    def perform(self, update_state):
+    def perform(self):
         super().perform()
 
-        _, bits = self._update_state()
-
-        if update_state:
-            state, bits = self._update_state()
-            self._save_state(state)
+        state, bits = self._update_state()
 
         exercise = {
             'type': 'math',
@@ -50,6 +47,11 @@ class Math(BaseExercise):
         }
 
         return exercise
+
+    def save(self):
+        state, _ = self._update_state()
+        self._save_state(state)
+        return {}
 
     def _update_state(self):
         state = self._profile['state'].copy()

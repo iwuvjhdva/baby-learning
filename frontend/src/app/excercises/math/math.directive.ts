@@ -38,7 +38,11 @@ module babyLearning {
     public labelFragments: ILabelFragment[];
     public showEndScreen: boolean = false;
 
-    constructor($scope: ng.IScope) {
+    private $http: ng.IHttpService;
+
+    constructor($scope: ng.IScope, $http: ng.IHttpService) {
+      this.$http = $http;
+
       this.radius = 5;
       this.currentBitIndex = 0;
       this.drawDots();
@@ -115,6 +119,7 @@ module babyLearning {
 
       if (this.currentBitIndex === this.bits.length) {
         this.showEndScreen = true;
+        this.saveState();
       } else if (this.currentBitIndex > this.bits.length) {
         this.currentBitIndex = -1;
         this.onOver();
@@ -122,6 +127,10 @@ module babyLearning {
         this.showEndScreen = false;
         this.drawDots();
       }
+    }
+
+    saveState() {
+      this.$http.put('http://127.0.0.1:8080/exercises/next', {});
     }
   }
 }

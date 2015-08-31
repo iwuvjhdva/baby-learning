@@ -28,12 +28,14 @@ def no_debug_only(f):
 
 
 class BaseExercise:
+    def __init__(self):
+        self._last_exercised = cherrypy.request.profile['last_exercised']
+
     def perform(self):
         self._verify_no_break_needed()
 
     @no_debug_only
     def _verify_no_break_needed(self):
-        self._last_exercised = cherrypy.request.profile['last_exercised']
         if self._last_exercised is not None:
             time_passed = datetime.now() - self._last_exercised
 
@@ -42,6 +44,7 @@ class BaseExercise:
 
     @no_debug_only
     def _verify_day_passed(self):
+        return
         now = datetime.now()
         if self._last_exercised and (
                 self._last_exercised.date() >= now.date() or now.hour < 6):
