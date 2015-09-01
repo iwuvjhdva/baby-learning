@@ -37,18 +37,24 @@ class BaseExercise:
     @no_debug_only
     def _verify_no_break_needed(self):
         if self._last_exercised is not None:
+            now = datetime.now()
+
             time_passed = datetime.now() - self._last_exercised
 
             if time_passed < timedelta(minutes=30):
                 raise TakeABreakException(time_passed)
 
+            if now.date() > self._last_exercised.date():
+                self._profile['state']['carried_over'] = True
+
     @no_debug_only
     def _verify_day_passed(self):
-        return
         now = datetime.now()
-        if self._last_exercised and (
+        carried_over = self._profile['state'].get('carried_over', False)
+        if self._last_exercised and not carried_over and (
                 self._last_exercised.date() >= now.date() or now.hour < 6):
             raise WaitForTomorrowException
+        self._profile['state']['carried_over'] = False
 
     def _save_state(self, state):
         db.client.profiles.update(

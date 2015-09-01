@@ -173,6 +173,9 @@ class Math(BaseExercise):
         return bits
 
     def _process_equation_state(self, state, op, members_func, next_state):
+        if state['counter'] == 0:
+            self._verify_day_passed()
+
         if state['counter'] % 3 == 1:
             bits = self._get_equation_bits(members_func, op)
             state['counter'] += 1
